@@ -1,0 +1,34 @@
+data:
+  source: "yfinance"
+  default_start_date: "2020-01-01"
+  cache_dir: "data/raw"
+  processed_dir: "data/processed"
+
+trading:
+  initial_capital: 100000
+  commission: 0.001
+  slippage: 0.0005
+  position_size: 0.2
+  max_positions: 5
+
+backtesting:
+  start_date: "2020-01-01"
+  end_date: null  # null means today
+  benchmark: "SPY"
+  rebalance_frequency: "daily"  # daily, weekly, monthly
+
+strategy:
+  lookback_period: 20
+  min_volume: 1000000
+  universe: ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "NFLX"]
+
+risk:
+  max_position_size: 0.25
+  max_drawdown: 0.20
+  stop_loss: 0.05
+  take_profit: 0.15
+  var_confidence: 0.95
+
+logging:
+  level: "INFO"
+  file: "logs/trading.log"

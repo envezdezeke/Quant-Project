@@ -1,0 +1,108 @@
+You are a quantitative finance expert and project manager. I need you to create a comprehensive planning document for my quantitative trading project.
+
+PROJECT OVERVIEW:
+I have built a Python-based quantitative trading framework for developing, backtesting, and analyzing alpha strategies. The project is currently in its initial setup phase with the base infrastructure complete.
+
+CURRENT PROJECT STRUCTURE:
+- Data Module: Handles fetching market data via yfinance, caching, preprocessing, and technical indicators
+- Strategy Module: Base strategy class and 3 implemented strategies (Momentum, Mean Reversion, MA Crossover)
+- Backtesting Engine: Full backtesting framework with transaction costs, slippage, and position management
+- Portfolio Module: Portfolio optimization (Max Sharpe, Min Vol, Risk Parity) and risk management (VaR, CVaR, drawdowns)
+- Utils: Performance metrics, plotting, and configuration management
+- Main entry point that runs multiple strategy backtests and generates performance reports
+
+TECH STACK:
+- Python 3.9+
+- Data: pandas, numpy, yfinance
+- Analysis: scipy, scikit-learn
+- Visualization: matplotlib, seaborn, plotly
+- Libraries: ta-lib, pandas-ta, backtrader, vectorbt (in requirements)
+
+PROJECT GOALS:
+1. Develop profitable alpha strategies for equity markets
+2. Build robust backtesting infrastructure
+3. Implement comprehensive risk management
+4. Create portfolio optimization tools
+5. Generate actionable trading signals
+
+WHAT I NEED FROM YOU:
+
+Create a detailed planning document that includes:
+
+1. PROJECT ROADMAP (6-12 months)
+   - Break down into phases/milestones
+   - Prioritize features and improvements
+   - Identify quick wins vs long-term goals
+
+2. STRATEGY DEVELOPMENT PLAN
+   - Additional alpha strategies to implement (factor models, statistical arbitrage, ML-based, etc.)
+   - Strategy parameter optimization approach
+   - Walk-forward analysis implementation
+   - Regime detection and adaptive strategies
+
+3. TECHNICAL IMPROVEMENTS
+   - Code quality improvements (testing, documentation, typing)
+   - Performance optimizations (vectorization, parallel processing)
+   - Database integration for data storage
+   - Real-time data feeds and live trading capabilities
+   - API integration (Interactive Brokers, Alpaca, etc.)
+
+4. RESEARCH & DEVELOPMENT
+   - Alpha research workflow
+   - Feature engineering pipeline
+   - Machine learning integration (sklearn, xgboost, neural networks)
+   - Alternative data sources to explore
+   - Backtesting improvements (event-driven engine, order types)
+
+5. RISK & PORTFOLIO MANAGEMENT
+   - Advanced risk metrics to implement
+   - Portfolio construction methodologies
+   - Transaction cost analysis
+   - Position sizing algorithms
+   - Multi-strategy portfolio allocation
+
+6. INFRASTRUCTURE & TOOLS
+   - Testing framework setup (pytest, unit tests, integration tests)
+   - CI/CD pipeline
+   - Logging and monitoring
+   - Performance dashboards
+   - Documentation (Sphinx, readthedocs)
+
+7. DATA & RESEARCH
+   - Data quality checks and validation
+   - Alternative data sources (sentiment, options, fundamentals)
+   - Factor library development
+   - Benchmark and universe construction
+
+8. IMMEDIATE NEXT STEPS (Next 2-4 weeks)
+   - Specific actionable tasks to start immediately
+   - Dependencies and prerequisites
+   - Success criteria for each task
+
+9. POTENTIAL CHALLENGES & MITIGATIONS
+   - Technical challenges (data quality, overfitting, etc.)
+   - Resource constraints
+   - Risk management concerns
+   - How to validate strategies properly
+
+10. LEARNING & SKILL DEVELOPMENT
+    - Areas where I need to upskill
+    - Recommended resources (books, papers, courses)
+    - Key concepts to master
+
+FORMAT REQUIREMENTS:
+- Use clear markdown formatting with headers and bullet points
+- Be specific and actionable (not generic advice)
+- Include estimated time commitments where relevant
+- Prioritize items by importance and dependencies
+- Include code examples or pseudocode where helpful
+- Reference industry best practices
+
+FOCUS AREAS:
+- Practical implementation over theory
+- Scalable and maintainable code architecture
+- Proper validation and avoiding overfitting
+- Real-world trading considerations (costs, slippage, liquidity)
+- Incremental improvements that build on existing infrastructure
+
+Please create a detailed, actionable planning document that will guide the development of this quantitative trading project from its current state to a production-ready systematic trading system.
