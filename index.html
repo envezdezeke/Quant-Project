@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VolatilityEdge</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">VE</span>
+          <div>
+            <strong>VolatilityEdge</strong>
+            <small>Options research lab</small>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="Primary">
+          <button class="nav-item is-active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="greeks">Greeks Lab</button>
+          <button class="nav-item" data-view="strategy">Strategy Tester</button>
+          <button class="nav-item" data-view="volatility">Volatility Lab</button>
+          <button class="nav-item" data-view="education">Education</button>
+        </nav>
+        <div class="risk-note">
+          <span>Book rule</span>
+          <p>Delta, IV, and short-vol edge are never shown without their hidden companion: probability, realized vol, and equity correlation.</p>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Trading Volatility workbench</p>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+          <div class="market-strip" id="marketStrip"></div>
+        </header>
+
+        <section class="view is-visible" id="dashboard">
+          <div class="dashboard-grid">
+            <section class="panel hero-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Strategy research</p>
+                  <h2>Choose a stock, build a structure, then test it across regimes.</h2>
+                </div>
+                <select id="quickSymbol" aria-label="Quick symbol selector"></select>
+              </div>
+              <div class="hero-metrics">
+                <div>
+                  <small>Selected spot</small>
+                  <strong id="dashSpot">$0.00</strong>
+                </div>
+                <div>
+                  <small>30d implied vol</small>
+                  <strong id="dashIv">0.0%</strong>
+                </div>
+                <div>
+                  <small>30d realized vol</small>
+                  <strong id="dashRv">0.0%</strong>
+                </div>
+                <div>
+                  <small>IV - RV spread</small>
+                  <strong id="dashVrp">0.0 pts</strong>
+                </div>
+              </div>
+              <canvas id="overviewChart" height="260" aria-label="Price and volatility overview"></canvas>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Pitfall monitor</p>
+                  <h2>Signals that keep the mental model honest</h2>
+                </div>
+              </div>
+              <div class="signal-stack" id="signalStack"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="greeks">
+          <div class="tool-grid">
+            <section class="panel controls-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Black-Scholes-Merton</p>
+                  <h2>Option lens</h2>
+                </div>
+              </div>
+              <div class="form-grid">
+                <label>Symbol<select id="greekSymbol"></select></label>
+                <label>Option<select id="optionType"><option value="call">Call</option><option value="put">Put</option></select></label>
+                <label>Strike<input id="strikeInput" type="number" step="1" /></label>
+                <label>Days<input id="daysInput" type="number" min="1" max="730" value="45" /></label>
+                <label>IV<input id="ivInput" type="range" min="5" max="110" value="32" /></label>
+                <label>Rate<input id="rateInput" type="range" min="0" max="8" value="4.5" step="0.1" /></label>
+              </div>
+              <div class="compact-readout">
+                <span>IV <strong id="ivReadout">32%</strong></span>
+                <span>r <strong id="rateReadout">4.5%</strong></span>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Delta is not probability</p>
+                  <h2>N(d1) vs N(d2)</h2>
+                </div>
+              </div>
+              <div class="bar-compare">
+                <div class="bar-card">
+                  <small>Delta</small>
+                  <strong id="deltaValue">0.000</strong>
+                  <div class="bar-rail"><span id="deltaBar"></span></div>
+                </div>
+                <div class="bar-card">
+                  <small>Probability ITM</small>
+                  <strong id="probValue">0.000</strong>
+                  <div class="bar-rail"><span id="probBar"></span></div>
+                </div>
+                <div class="bar-card warning">
+                  <small>Divergence</small>
+                  <strong id="divergenceValue">0.000</strong>
+                  <p>A vanilla option delta embeds conditional payoff shape; expiry probability uses N(d2).</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel wide-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Price and risk</p>
+                  <h2>Greeks command center</h2>
+                </div>
+              </div>
+              <div class="metric-grid" id="greekMetrics"></div>
+              <canvas id="surfaceCanvas" height="300" aria-label="Greek surface heatmap"></canvas>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="strategy">
+          <div class="strategy-layout">
+            <section class="panel controls-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Strategy builder</p>
+                  <h2>Backtest configuration</h2>
+                </div>
+              </div>
+              <div class="form-grid one-col">
+                <label>Underlying<select id="strategySymbol"></select></label>
+                <label>Structure<select id="strategyPreset"></select></label>
+                <div>
+                  <span class="field-label">Test basket</span>
+                  <div class="basket-grid" id="basketSelect"></div>
+                </div>
+                <label>Days to expiry<input id="strategyDays" type="number" value="45" min="7" max="365" /></label>
+                <label>Strike offset (%)<input id="strikeOffset" type="number" value="0" min="-30" max="30" step="1" /></label>
+                <label>Contracts<input id="contractQty" type="number" value="1" min="1" max="25" /></label>
+                <label>Starting capital<input id="capitalInput" type="number" value="25000" min="1000" step="1000" /></label>
+                <button class="primary-action" id="runBacktest">Run backtest</button>
+              </div>
+            </section>
+
+            <section class="panel wide-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Results</p>
+                  <h2>Rolling options backtest</h2>
+                </div>
+                <button class="ghost-action" id="copyResults">Copy data</button>
+              </div>
+              <div class="metric-grid" id="backtestMetrics"></div>
+              <canvas id="backtestChart" height="280" aria-label="Backtest equity curve"></canvas>
+              <div class="legs-table" id="legsTable"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Expiry profile</p>
+                  <h2>Payoff map</h2>
+                </div>
+              </div>
+              <canvas id="pnlCanvas" height="260" aria-label="Strategy payoff diagram"></canvas>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Monte Carlo</p>
+                  <h2>Discrete hedge distribution</h2>
+                </div>
+              </div>
+              <div class="form-grid two-col">
+                <label>Paths<input id="mcPaths" type="number" value="1200" min="200" max="6000" step="100" /></label>
+                <label>Hedge days<input id="hedgeDays" type="number" value="5" min="1" max="30" /></label>
+              </div>
+              <canvas id="mcCanvas" height="240" aria-label="Monte Carlo P and L histogram"></canvas>
+              <p class="panel-caption" id="mcCaption"></p>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="volatility">
+          <div class="tool-grid">
+            <section class="panel wide-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Volatility surface studio</p>
+                  <h2>Implied surface, skew, and term structure</h2>
+                </div>
+                <select id="surfaceSymbol"></select>
+              </div>
+              <canvas id="volSurfaceCanvas" height="330" aria-label="Volatility surface"></canvas>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">VRP dashboard</p>
+                  <h2>IV minus RV with equity correlation</h2>
+                </div>
+              </div>
+              <canvas id="vrpCanvas" height="240" aria-label="VRP chart"></canvas>
+              <div class="warning-box">Short volatility behaves like a disguised equity position when stress arrives. The premium is structural compensation, not free yield.</div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Variance vs volatility</p>
+                  <h2>Convexity premium</h2>
+                </div>
+              </div>
+              <div class="form-grid one-col">
+                <label>Vol-of-vol<input id="volOfVol" type="range" min="5" max="95" value="35" /></label>
+              </div>
+              <div class="metric-grid" id="varianceMetrics"></div>
+              <canvas id="varianceCanvas" height="190" aria-label="Variance swap spread chart"></canvas>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Term structure desk</p>
+                  <h2>VIX roll cost simulator</h2>
+                </div>
+              </div>
+              <canvas id="vixCanvas" height="220" aria-label="VIX futures curve"></canvas>
+              <p class="panel-caption" id="vixCaption"></p>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="education">
+          <div class="lesson-grid" id="lessonGrid"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
